@@ -5,7 +5,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <windows.h>
-#include <conio.h>
+
 
 struct Produto {
     int id;
@@ -22,9 +22,9 @@ void CadastrarFruta(struct Produto informacoesProduto[], int *i) { // Chamei o v
     scanf("%s", informacoesProduto[*i].nome);
     printf("\nAdicione o preço Unitário por KG: ");
     scanf(" %f", &informacoesProduto[*i].precoKG);
-    fflush(stdin); // Limpa o buffer de entrada para que o %c não leia o \n
     (*i)++;
-    printf("Quer cadastrar mais algum produto? S/N\n");
+    printf("\nQuer cadastrar mais algum produto? S/N\n");
+    fflush(stdin); // Limpa o buffer de entrada para que o %c não leia o \n
     scanf(" %c", &opcao);
     opcao = toupper(opcao); // Função toupper da biblioteca ctype, para deixar a resposta em maiusculo
     if (opcao != 'S' && opcao != 'N') {
@@ -43,13 +43,13 @@ void CadastrarFruta(struct Produto informacoesProduto[], int *i) { // Chamei o v
 int Menu() { // Função do menu que retorna para o main a opção escolhida
     int op;
     linha();
-    printf("MENU PDV");
+    printf("            MENU PDV");
     linha();
     printf("1 - Sistema PDV\n");
     printf("2 - Sistema de Estoque\n");
     printf("3 - Sair\n");
     linha();
-    printf("Digite sua opção: ");
+    printf("\nDigite sua opção: ");
     scanf("%d", &op);
     system("cls");
     return op;
@@ -98,14 +98,13 @@ int main(void) {
                     printf("   ID:  |     Fruta:   |  Preço KG   |\n");
                     printf("--------------------------------------\n");
                     for (int fru = 0; fru < i; fru++) { //variavel fru, vai repetir o código enquanto for menor que i, no qual é incrementado quando adicionado um novo produto
-                        printf("| %-5d | %-12s |   %f  |\n", // Eu defini tamanhos fixos para cada variavel, 5 caracteres para ID e 12 para string, para ficar aninhado
+                        printf("| %-5d | %-12s |   %6.2f  |\n", // Eu defini tamanhos fixos para cada variavel, 5 caracteres para ID e 12 para string, para ficar aninhado
                                informacoesProduto[fru].id,
                                informacoesProduto[fru].nome,
                                informacoesProduto[fru].precoKG);
                         printf("--------------------------------------\n");
                     }
-                    printf("\nPressione qualquer tecla para fechar a lista...");
-                    getch(); // Esse getch da biblioteca conio.h, vai esperar que o usuario aperte uma tecla para continuar rodando o programa
+                    system("pause");
                     system("cls");
 
                     break;
