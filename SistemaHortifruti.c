@@ -45,11 +45,11 @@ int Menu() { // Função do menu que retorna para o main a opção escolhida
     linha();
     printf("            MENU PDV");
     linha();
-    printf("1 - Sistema PDV\n");
+    printf("\n1 - Sistema PDV\n");
     printf("2 - Sistema de Estoque\n");
     printf("3 - Sair\n");
     linha();
-    printf("\nDigite sua opção: ");
+    printf("Digite sua opção: ");
     scanf("%d", &op);
     system("cls");
     return op;
