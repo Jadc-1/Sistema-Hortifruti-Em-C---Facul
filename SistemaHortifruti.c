@@ -98,7 +98,7 @@ int main(void) {
                     printf("   ID:  |     Fruta:   |  Preço KG   |\n");
                     printf("--------------------------------------\n");
                     for (int fru = 0; fru < i; fru++) { //variavel fru, vai repetir o código enquanto for menor que i, no qual é incrementado quando adicionado um novo produto
-                        printf("| %-5d | %-12s |   %6.2f  |\n", // Eu defini tamanhos fixos para cada variavel, 5 caracteres para ID e 12 para string, para ficar aninhado
+                        printf("| %-5d | %-12s |   %8.2f  |\n", // Eu defini tamanhos fixos para cada variavel, 5 caracteres para ID e 12 para string, para ficar aninhado
                                informacoesProduto[fru].id,
                                informacoesProduto[fru].nome,
                                informacoesProduto[fru].precoKG);
