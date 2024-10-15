@@ -141,16 +141,23 @@ int main(void) {
             totalCompra = 0;
             laco:
                 pesoProd = 0;
-                printf("\nID produto: ");
+                invalido:printf("\nID produto: ");
                 scanf("%d", &idProd);
-                if(idProd != informacoesProduto[idProd - 1].id) {
+
+
+                if (idProd <= 0 || idProd > 10) {
+                    printf("ID inválido! digite um ID válido...");
+                    sleep(1);
+                    goto invalido;
                     system("cls");
-                    printf("PRODUTO NÃO ESTÁ CADASTRADO!\n");
-                    printf("\nCadastre-os no sistema de estoque\n");
-                    printf("\n");
-                    system("pause");
-                    goto menu_estoq;
-                    break;
+                } else if(idProd != informacoesProduto[idProd - 1].id ) {
+                        system("cls");
+                        printf("PRODUTO NÃO ESTÁ CADASTRADO!\n");
+                        printf("\nCadastre-os no sistema de estoque\n");
+                        printf("\n");
+                        system("pause");
+                        goto menu_estoq;
+                        break;
                 }
 
                 printf("Peso(KG): ");
