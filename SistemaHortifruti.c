@@ -94,7 +94,8 @@ int Menu() { // Função do menu que retorna para o main a opção escolhida
     linha();
     printf("\n1 - Sistema PDV\n");
     printf("2 - Sistema de Estoque\n");
-    printf("3 - Sair\n");
+    printf("3 - Relatório de Vendas\n");
+    printf("4 - Sair\n");
     linha();
     printf("Digite sua opção: ");
     scanf("%d", &op);
@@ -113,10 +114,11 @@ int main(void) {
 
     struct Produto informacoesProduto[10];
     int prod = 0, idProd = 0, i = 0;
-    float pesoProd = 0, totalCompra = 0, totalProd = 0;
+    float pesoProd, totalCompra = 0, totalProd[10], totalDia = 0;
     int op = 0;
-
+    char resp;
     do {
+        menu_p:
         op = Menu();
         switch (op)
         {
@@ -124,41 +126,60 @@ int main(void) {
             system("cls");
             printf("Abrindo o sistema de PDV...");
             sleep(1);
+            idProduto:
             system("cls");
-            printf("\nSistema de vendas:");
-            linha();
+            printf("\n------------------------------\n");
+            printf("|      Sistema de vendas:    |");
+            printf("\n------------------------------\n");
+            printf("\n");
             printf("Quantos produtos? ");
             scanf("%d", &prod);
             system("cls");
-            idProduto:
-            printf("Sistema de vendas:");
-            linha();
+            printf("\n------------------------------\n");
+            printf("|      Sistema de vendas:    |");
+            printf("\n------------------------------\n");
+            totalCompra = 0;
             laco:
                 pesoProd = 0;
-                printf("ID produto: ");
+                printf("\nID produto: ");
                 scanf("%d", &idProd);
-                if(idProd < 0 || idProd != informacoesProduto[idProd - 1].id)
-                {
-                    printf("ID inválido! Coloque o ID correto!\n");
-                    printf("\nPressiona qualquer tecla para continuar a digitar os IDs...\n");
-                    getch();
+                if(idProd != informacoesProduto[idProd - 1].id) {
                     system("cls");
-                    printf("*Não se preocupe se houver algum ID anterior foi salvo\n\n");
-                    goto idProduto;
+                    printf("PRODUTO NÃO ESTÁ CADASTRADO!\n");
+                    printf("\nCadastre-os no sistema de estoque\n");
+                    printf("\n");
+                    system("pause");
+                    goto menu_estoq;
                     break;
                 }
+
                 printf("Peso(KG): ");
-                scanf("%f", &pesoProd);
-                totalProd = informacoesProduto[idProd - 1].precoKG * pesoProd;
-                totalCompra = totalCompra + totalProd;
+                scanf(" %f", &pesoProd);
+                totalProd[idProd - 1] = informacoesProduto[idProd - 1].precoKG * pesoProd;
+                totalCompra = totalCompra + totalProd[idProd - 1];
                 prod--;
+                printf("\n------------------------------\n");
+                printf("|%-16s|R$%9.2f|", informacoesProduto[idProd - 1].nome, totalProd[idProd - 1]);
+                printf("\n------------------------------\n");
                 if (prod > 0)
                 {
                     goto laco;
                 }
-                linha();
-                printf("\nTotal da compra = R$%.2f\n", totalCompra);
+                printf("------------------------------\n");
+                printf("|Total da compra | R$%8.2f|\n", totalCompra);
+                printf("------------------------------\n");
+                totalDia = totalCompra + totalDia;
+                printf("Pressione 3 para continuar no sistema ou outra tecla para sair...");
+                scanf(" %c", &resp);
+                if (resp == '3') {
+                    goto idProduto;
+                } else {
+                    system("cls");
+                    goto menu_p;
+                }
+                system("cls");
                 break;
+
         case 2:
             system("cls");
             printf("Abrindo o sistema de Estoque...");
@@ -214,13 +235,20 @@ int main(void) {
             }
             break;
         case 3:
+            printf("--------------------------------------\n");
+            printf("|         Relatório de vendas:       |\n");
+            printf("--------------------------------------\n");
+            printf("|Total do dia: %8.2f\n       ", totalDia);
+            printf("--------------------------------------\n");
+            break;
+        case 4:
             printf("Saindo...");
             sleep(1);
             break;
         default:
             break;
         }
-    } while (op != 3); // Vai repetir enquanto a resposta for diferente de 3, se for 3,é a opção sair, então irá parar de repetir
+    } while (op != 4); // Vai repetir enquanto a resposta for diferente de 3, se for 3,é a opção sair, então irá parar de repetir
 
     return 0;
 }
