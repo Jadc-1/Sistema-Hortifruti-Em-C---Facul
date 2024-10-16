@@ -17,9 +17,9 @@ int CadastrarFruta(struct Produto informacoesProduto[], int *i) { // Chamei o ve
     char opcao;
     refaz:informacoesProduto[*i].id = *i + 1; // Em C o ponteiro não é utilizado automaticamente para mudar a variavel original e pegar o seu endereço de memoria,  utilizamos *, para usar o enderaço, utilizamos %p, pegar o valor (%d, %f, %lf)
     printf("ID: %d\n", informacoesProduto[*i].id); // Geralmente é utilizado ponteiro com struct, para garantir que a variavel original será modificada e não só a cópia
-    printf("\nQual fruta você deseja cadastrar?");
+    printf("\nQual fruta você deseja cadastrar? (*sem acentuação e ç)\n");
     scanf("%s", informacoesProduto[*i].nome);
-    printf("\nAdicione o preço Unitário por KG: \n");
+    printf("\nAdicione o preço por KG: ");
     scanf(" %f", &informacoesProduto[*i].precoKG);
     (*i)++;
     printf("\nQuer cadastrar mais algum produto? S/N\n");
@@ -90,7 +90,7 @@ void ExcluirFruta(struct Produto informacoesProduto[], int *i)
 int Menu() { // Função do menu que retorna para o main a opção escolhida
     int op;
     linha();
-    printf("            MENU PDV");
+    printf("         MENU PRINCIPAL");
     linha();
     printf("\n1 - Sistema PDV\n");
     printf("2 - Sistema de Estoque\n");
@@ -245,8 +245,10 @@ int main(void) {
             printf("--------------------------------------\n");
             printf("|         Relatório de vendas:       |\n");
             printf("--------------------------------------\n");
-            printf("|Total do dia: %8.2f\n       ", totalDia);
+            printf("|  Total do dia: R$%8.2f          |\n", totalDia);
             printf("--------------------------------------\n");
+            system("pause");
+            system("cls");
             break;
         case 4:
             printf("Saindo...");
