@@ -18,17 +18,34 @@ int CadastrarFruta(struct Produto informacoesProduto[], int *i) { // Chamei o ve
     refaz:informacoesProduto[*i].id = *i + 1; // Em C o ponteiro não é utilizado automaticamente para mudar a variavel original e pegar o seu endereço de memoria,  utilizamos *, para usar o enderaço, utilizamos %p, pegar o valor (%d, %f, %lf)
     printf("ID: %d\n", informacoesProduto[*i].id); // Geralmente é utilizado ponteiro com struct, para garantir que a variavel original será modificada e não só a cópia
     printf("\nQual fruta você deseja cadastrar? (*sem acentuação e ç)\n");
+    fflush(stdin);
     scanf("%s", informacoesProduto[*i].nome);
-    printf("\nAdicione o preço por KG: ");
-    scanf(" %f", &informacoesProduto[*i].precoKG);
+    precoKilo:
+    printf("\nAdicione o preço por KG:");
+
+    // verifica se a leitura do float foi deu certo.
+    if (scanf("%f", &informacoesProduto[*i].precoKG) != 1) {
+        // caso não tenha dado, limpa o buffer e exibe uma mensagem de erro
+        printf("\nEntrada inválida! Por favor, digite um número válido.\n");
+        fflush(stdin);
+        goto precoKilo;
+    }
+
+    // Verifica se o valor está dentro do intervalo aceitável
+    if (informacoesProduto[*i].precoKG <= 0 || informacoesProduto[*i].precoKG > 10000) {
+        printf("\nQuantidade inválida! Digite o preço por KG \n");
+        sleep(2);
+        system("cls");
+        goto precoKilo;
+    }
+
     (*i)++;
     printf("\nQuer cadastrar mais algum produto? S/N\n");
     fflush(stdin); // Limpa o buffer de entrada para que o %c não leia o \n
     scanf(" %c", &opcao);
     opcao = toupper(opcao); // Função toupper da biblioteca ctype, para deixar a resposta em maiusculo
     if (opcao != 'S' && opcao != 'N') {
-        printf("Incorreto...\n");
-        printf("Digite S ou N: ");
+        printf("Incorreto!! Digite S ou N: ");
         scanf(" %c", &opcao);
     } else if (opcao == 'S') {
         system("cls");
@@ -47,17 +64,17 @@ void ExcluirFruta(struct Produto informacoesProduto[], int *i)
     char R = 'S';
     struct Produto informacoesProduto_Aux[10];
 
-    printf("*Caso não queira apagar um id, digite um ID que não esteja cadastrado\n\n");
-    printf("Digite ID a ser excluído: \n");
-    scanf("%d", &idExcluir);
-
-
     if (*i <= 0) {
         printf("\nNENHUMA FRUTA CADASTRADA!\n");
         printf("\nAperte qualquer tecla para voltar ao Menu do Estoque...\n");
         getch();
         return;
     }
+
+    printf("*Caso não queira apagar um id, digite um ID que não esteja cadastrado\n\n");
+    printf("Digite ID a ser excluído: \n");
+    scanf("%d", &idExcluir);
+
     printf("\nExcluindo a fruta %s...\n", informacoesProduto[idExcluir - 1].nome);
     sleep(2);
 
@@ -113,10 +130,11 @@ int main(void) {
     setlocale(LC_ALL, "pt-br"); // Adicionei a localidade de pt-br
 
     struct Produto informacoesProduto[10];
-    int prod = 0, idProd = 0, i = 0;
-    float pesoProd, totalCompra = 0, totalProd[10], totalDia = 0;
+    int prod = 0, idProd = 0, i = 0, adicio = 0, totalCompra_Aux;
+    float pesoProd, totalCompra = 0, totalProd[10], totalDia = 0, infoTotal[100];
     int op = 0;
     char resp;
+    int tamanho = sizeof(infoTotal) / sizeof(infoTotal[0]);
     do {
         menu_p:
         op = Menu();
@@ -128,28 +146,38 @@ int main(void) {
             sleep(1);
             idProduto:
             system("cls");
-            printf("\n------------------------------\n");
+            produtos:printf("\n------------------------------\n");
             printf("|      Sistema de vendas:    |");
             printf("\n------------------------------\n");
             printf("\n");
             printf("Quantos produtos? ");
+            fflush(stdin);
             scanf("%d", &prod);
+            if (prod <= 0 || prod > 150) {
+                    printf("Quantidade inválida! Digite a quantidade de número inteiros \n");
+                    sleep(3);
+                    system("cls");
+                    goto produtos;
+            }
+            totalCompra = 0;
             system("cls");
+            invalido:
             printf("\n------------------------------\n");
             printf("|      Sistema de vendas:    |");
             printf("\n------------------------------\n");
-            totalCompra = 0;
             laco:
+                totalCompra_Aux = 0;
                 pesoProd = 0;
-                invalido:printf("\nID produto: ");
+                printf("\nID produto: ");
+                fflush(stdin);
                 scanf("%d", &idProd);
 
 
                 if (idProd <= 0 || idProd > 10) {
                     printf("ID inválido! digite um ID válido...");
                     sleep(1);
-                    goto invalido;
                     system("cls");
+                    goto invalido;
                 } else if(idProd != informacoesProduto[idProd - 1].id ) {
                         system("cls");
                         printf("PRODUTO NÃO ESTÁ CADASTRADO!\n");
